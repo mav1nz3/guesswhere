@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style type="text/css">
+        .item {
+            width: 150px;
+            height: 150px;
+            background-size:100%;
+            background-repeat: no-repeat;
+            margin-top: 50px;
+            margin-left: 20px;
+        }
+        .bg{
+        	width: 1905px;
+        	height: 900px;
+        	background-image: url(bg.jpg);
+        	background-size: 100% 100%;
+        }
+        .viewScore{
+        	position: absolute;
+        	width: 300px;
+        	height: 500px;
+        	background-color: #c3e072;
+        	margin-left: 15px;
+        	margin-top: 15px;
+        }
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            height: 200px;
+            width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .active{
+            border: 5px solid green;
+        }
+    </style>
+</head>
+<body>
+	<div class="bg">
+		<div class="viewScore"><p style="font-size: 20px; margin-left: 115px">Score: <span class="score"></span></p></div>
+		<div class="row"></div>
+
+	</div>
+	
+    <script type="text/javascript">
+    //див-родитель
+    let scoremin = document.querySelector(".score")
+    let row = document.querySelector(".row");
+    let score = 0
+    scoremin.innerHTML = score
+
+    //хранение картинок
+    let images = ["1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png"];
+
+    let past_item = null;
+
+    let random = function(arg){
+        let rand = Math.round(Math.random() * arg);
+        return rand;
+    }
+    let index = random(1);
+
+    for(let i = 0; i < 16; i = i + 1){
+        let index = random(images.length - 1);
+        let item = document.createElement("div");
+        row.appendChild(item);
+        item.classList.add("item");
+        item.style.backgroundImage = "url(" + images[index] + ")";
+        item.image = images[index]
+        images.splice(index, 1);
+        item.onclick = function(){
+            item.classList.add("active");
+            if(past_item == null){
+                past_item = item;
+            }
+            else if (past_item.image == item.image) {
+                past_item.style.opacity = "0";
+                item.style.opacity = "0";
+                past_item = null;
+                score = score + 1;
+                scoremin.innerHTML = score;
+                if(scoremin == 0){
+                	alert("You win!")
+                }
+            } else if(past_item.image != item.image){
+                item.classList.remove("active");
+                past_item.classList.remove("active");
+                past_item = null;
+            }
+        }
+    }
+    </script>
+</body>
+</html>
